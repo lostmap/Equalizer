@@ -20,6 +20,8 @@ import static sample.FilterInfo.COEFS;
 public class Player implements Runnable {
 
     private static final int DISTORTION_MAX = 500;
+    private static final double DEFAULT_ATTACK_TIME =  0.0002;//in seconds
+    private static final double DEFAULT_RELEASE_TIME =  0.0004;//in seconds
     public static final int SEEK_SLIDER_RANGE = 755;
     public static final int REVERB_STEP = 100;  // миллисекунды
     public static final int REVERB_COUNT = 6;   //кол-во повторений
@@ -120,7 +122,13 @@ public class Player implements Runnable {
             int reverbStep = (int) format.getSampleRate() / 1000 * REVERB_STEP;
             //double vibroMulti = Math.PI / format.getSampleRate() * VIBRO_PERIOD;
             int delayValue = bufferSize / 2;
-        
+            
+            
+            int sampleRate = 44100;
+            double gainAttack;
+            double gainRelease;
+            double envelopeOut = 0.0d;
+
             //при изменении ползунка перемотки пользователем, обновляем позицию
             updatePos(initPosition);
 
@@ -137,31 +145,33 @@ public class Player implements Runnable {
 
                 //синхронизируем при перемотке
                 synchronized (this) {
-                    //Reverberation
-                    if (controller.reverberationButton.isSelected()) {
-                        for (int i = 0; i < preBufferSize + size; i++) {
-                            double sum = 0;
 
-                            for (int k = 0; k < REVERB_COUNT; k++) {
-                                int j = this.pos - preBufferSize + i - reverbStep * k;
-                                if (j < 0)
-                                    continue;
-                                //добавляем предыдущие отсчеты с постепенным заглушением
-                                sum += rawData[j] * (REVERB_COUNT - k) / (REVERB_COUNT / 2);
-                            }
-                            eqBuffer[i] = sum;
-                        }
-                    } else {
-                        for (int i = 0; i < preBufferSize + size; i++) {
+                    for (int i = 0; i < preBufferSize + size; i++) {
                             int j = this.pos - preBufferSize + i;
                             eqBuffer[i] = j >= 0 ? rawData[j] : 0;
-                        }
                     }
-
-                    //delay
+                    
+                    //Delay
                     if (controller.delayButton.isSelected()) {
                         for (int i = 0; i < bufferSize; i++) {
                             eqBuffer[(i + delayValue) % bufferSize] += 0.5 * eqBuffer[i];
+                        }
+                    }
+
+                    //Envelope
+                    if (controller.envelopeButton.isSelected()) {
+                        gainAttack = (double) Math.exp(-1.0 / (sampleRate * DEFAULT_ATTACK_TIME));
+                        gainRelease = (double) Math.exp(-1.0 / (sampleRate * DEFAULT_RELEASE_TIME));
+                        double envelopeIn;
+                        for (int i = 0; i < bufferSize; i++){
+                            envelopeIn = Math.abs(eqBuffer[i]);
+                            if(envelopeOut < envelopeIn){
+                                envelopeOut =  envelopeIn + gainAttack * (envelopeOut - envelopeIn);
+                            }
+                            else {
+                                envelopeOut = envelopeIn + gainRelease * (envelopeOut - envelopeIn);
+                            }
+                            eqBuffer[i] = envelopeOut;
                         }
                     }
 
@@ -191,14 +201,6 @@ public class Player implements Runnable {
                         effectResult[i] = (effectResult[i] * musicVolume);
                     }
 
-                    //Distortion effect
-                    if (controller.dictortionButton.isSelected()) {
-                        for (int i = 0; i < size; i++) {
-                            if (effectResult[i] > DISTORTION_MAX) {
-                                effectResult[i] = DISTORTION_MAX;
-                            }
-                        }
-                    }
                 }
 
                 //переводим в нужный формат

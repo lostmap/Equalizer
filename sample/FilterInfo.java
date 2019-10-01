@@ -2037,16 +2037,6 @@ public final class FilterInfo {
                 0.0001243309507647
               },
     };
-
-
-    public static final String INFO_BAND_0 = "LowPass 500 Hz";
-    public static final String INFO_BAND_1 = "BandPass 500-1500 Hz";
-    public static final String INFO_BAND_2 = "BandPass 1500-3500 Hz";
-    public static final String INFO_BAND_3 = "BandPass 3500-7500 Hz";
-    public static final String INFO_BAND_4 = "BandPass 7500-15500 Hz";
-    public static final String INFO_BAND_5 = "BandPass 15500-20500 Hz";
-
-
 }  
 
 

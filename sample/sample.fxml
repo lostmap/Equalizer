@@ -35,9 +35,8 @@
         <Slider id="4000" fx:id="band7" layoutX="642.0" layoutY="286.0" max="100.0" min="-100.0" orientation="VERTICAL" />
         
         <Label layoutX="643.0" layoutY="40.0" text="Эффекты" />
-        <ToggleButton fx:id="reverberationButton" layoutX="505.0" layoutY="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="157.0" text="Реберберация" />
+        <ToggleButton fx:id="envelopeButton" layoutX="505.0" layoutY="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="157.0" text="Енвелоп" />
         <ToggleButton fx:id="delayButton" layoutX="680.0" layoutY="67.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Дилей" />
-        <ToggleButton fx:id="dictortionButton" layoutX="680.0" layoutY="117.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="95.0" text="Дисторшн" />
         <Button fx:id="openFile" layoutX="15.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#openDialog" prefHeight="39.0" prefWidth="157.0" text="Выбрать файл" />
         <Label fx:id="trackName" layoutX="193.0" layoutY="31.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="299.0" text="Трек:" />
         <Slider fx:id="volume" blockIncrement="0.01" layoutX="449.0" layoutY="42.0" max="1.0" orientation="VERTICAL" value="1.0" />

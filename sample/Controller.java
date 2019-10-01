@@ -120,9 +120,7 @@ public class Controller {
     LineChart<Number, Number> after;
 
     @FXML
-    ToggleButton dictortionButton;
-    @FXML
-    ToggleButton reverberationButton;
+    ToggleButton envelopeButton;
     @FXML
     ToggleButton delayButton;
     @FXML
