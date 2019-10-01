@@ -29,7 +29,7 @@ public class Controller {
     public static final double STEP = 0.1;
 
     //пока по умолчанию
-    private File musicFile = new File("11 - Bohemian Rhapsody.wav");
+    private File musicFile;
 
     private Player player;
     private Slider[] bands;
@@ -77,7 +77,7 @@ public class Controller {
             }
         });
 
-        bands = new Slider[]{band0, band1, band2, band3, band4, band5, band6, band7, band8, band9};
+        bands = new Slider[]{band0, band1, band2, band3, band4, band5, band6, band7};
         ChangeListener<Number> bandListener = (observable, oldValue, newValue) -> {
             if (player != null) {
                 player.setBandsVolume(collectBandVolumes());
@@ -129,7 +129,7 @@ public class Controller {
     ToggleButton equalizerOff;
 
     @FXML
-    Slider band0, band1, band2, band3, band4, band5, band6, band7, band8, band9;
+    Slider band0, band1, band2, band3, band4, band5, band6, band7;
 
     @FXML
     Button play;

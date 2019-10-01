@@ -119,8 +119,8 @@ public class Player implements Runnable {
             //значения для эффектов
             int reverbStep = (int) format.getSampleRate() / 1000 * REVERB_STEP;
             //double vibroMulti = Math.PI / format.getSampleRate() * VIBRO_PERIOD;
-            int delayValue = 200;
-            int position = 0;
+            int delayValue = bufferSize / 2;
+        
             //при изменении ползунка перемотки пользователем, обновляем позицию
             updatePos(initPosition);
 
@@ -160,11 +160,8 @@ public class Player implements Runnable {
 
                     //delay
                     if (controller.delayButton.isSelected()) {
-                        for (int i = delayValue; i < size; i++) {
-                            //колеблемся от середины
-                           
-                            effectResult[i] += effectResult[position];
-                            position += 1;
+                        for (int i = 0; i < bufferSize; i++) {
+                            eqBuffer[(i + delayValue) % bufferSize] += 0.5 * eqBuffer[i];
                         }
                     }
 
